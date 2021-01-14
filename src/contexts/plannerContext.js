@@ -2,8 +2,7 @@ import React, {useEffect, useState, createContext} from 'react'
 
 export const PlannerContext = createContext();
 
-const initialState = {step: 'goal-selection', activities: [], goals: []}
-const steps = ['goal-selection', 'plan-overview', 'plan-share'];
+const initialState = {step: 'goal-selection', steps: ['goal-selection', 'plan-overview', 'plan-share'], activities: [], goals: []}
 
 const PlannerContextProvider = ({children}) => {
   const [planner, setPlanner] = useState(initialState);
@@ -30,20 +29,24 @@ const PlannerContextProvider = ({children}) => {
     setPlanner({...planner, step})
   }
 
-  const stepNavigation = (currentStep, direction) => {
-    const stepNum = steps.indexOf(currentStep);
-    const nextStep = steps[stepNum + 1]
-    const prevStep = steps[stepNum - 1]
-    console.log(prevStep, nextStep)
-    if (direction === 'next' && nextStep) {
-      updatePlannerStep(nextStep)
-      return nextStep.split(" ").join("-")
+  const nextStep = (currentStep) => {
+    const stepIndex = planner.steps.indexOf(currentStep)
+    if (stepIndex + 1 < planner.steps.length) {
+      const nextStepIndex = stepIndex + 1
+      updatePlannerStep(planner.steps[nextStepIndex])
+      return planner.steps[nextStepIndex]
     }
+    return currentStep;
+  }
 
-    if (direction === 'prev' && prevStep) {
-      updatePlannerStep(prevStep)
-      return prevStep
+  const prevStep = (currentStep) => {
+    const stepIndex = planner.steps.indexOf(currentStep)
+    if (stepIndex - 1 >= 0) {
+      const prevStepIndex = stepIndex - 1
+      updatePlannerStep(planner.steps[prevStepIndex])
+      return planner.steps[prevStepIndex]
     }
+    return currentStep
   }
 
   const addGoal = (goal) => {
@@ -52,7 +55,7 @@ const PlannerContextProvider = ({children}) => {
         ...planner,
         goals: [...planner.goals, {id: goal._id, name: goal.name, goalData: goal}]
       })
-      steps.splice(1, 0, `activity-selection/${goal.name}`)
+      planner.steps.splice(1, 0, `activity-selection/${goal._id}`)
     }
   }
 
@@ -87,12 +90,13 @@ const PlannerContextProvider = ({children}) => {
     setPlanner({
       ...planner, 
       activities: [...planner.activities.filter(activity => activity.goalData.id !== goalId)],
-      goals: [...planner.goals.filter(plannerGoal => plannerGoal.id !== goalId)]
+      goals: [...planner.goals.filter(plannerGoal => plannerGoal.id !== goalId)],
+      steps: [...planner.steps.filter(plannerStep => plannerStep.split('/')[1] !== goalId)]
     })
   }
 
   return (
-    <PlannerContext.Provider value={{planner, clearPlanner, updatePlannerStep, stepNavigation, addGoal, removeGoal, addActivity, removeActivity}}>
+    <PlannerContext.Provider value={{planner, clearPlanner, updatePlannerStep, nextStep, prevStep, addGoal, removeGoal, addActivity, removeActivity}}>
       {children}
     </PlannerContext.Provider>
   )

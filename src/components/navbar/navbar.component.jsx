@@ -10,14 +10,22 @@ import {Nav, NavContainer, Logo, NavLink, NavList, NavItem, NavItemDropdown, Nav
 const Navbar = ({history}) => {
   const initialDropdownState = {goal: false, activity: false};
   const [showDropdown, setShowDropdown] = useState(initialDropdownState);
-  const { planner, stepNavigation, removeActivity, removeGoal} = useContext(PlannerContext)
+  const { planner, nextStep, prevStep, removeActivity, removeGoal} = useContext(PlannerContext)
 
   const toggleDropdown = (dropdown) => {
     setShowDropdown({...initialDropdownState, [dropdown]: !showDropdown[dropdown]})
   }
 
-  const handleStepNavigation = (currentStep, direction) => {
-    history.replace(`/${stepNavigation(currentStep, direction)}`)
+  const handleNav = async (direction) => {
+    if (direction === 'next') {
+      const newStep = nextStep(planner.step)
+      console.log(newStep)
+      history.replace(`/${newStep}`)
+    } else if (direction === 'prev') {
+      const newStep = prevStep(planner.step)
+      console.log(newStep)
+      history.replace(`/${newStep}`)
+    }
   }
 
   return (
@@ -64,8 +72,8 @@ const Navbar = ({history}) => {
             }
           </NavItem>
         </NavList>
-        <NavButton onClick={() => handleStepNavigation(planner.step, 'prev')}>Prev Step.</NavButton>
-        <NavButton onClick={() => handleStepNavigation(planner.step, 'next')}>Next Step.</NavButton>
+        <NavButton onClick={() => handleNav('prev')}>Prev Step.</NavButton>
+        <NavButton onClick={() => handleNav('next')}>Next Step.</NavButton>
       </Nav>
     </NavContainer>
   )
