@@ -51,6 +51,15 @@ export const ActivityListSection = styled.section`
   }
 `
 
+export const CardListContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-right: 1rem;
+
+  overflow-y: scroll;
+  overflow-x: visible;
+`
+
 export const ActivityInfoSection = styled.section`
   height: 100%;
   width: ${props => props.info ? "100%" : "0%" };
