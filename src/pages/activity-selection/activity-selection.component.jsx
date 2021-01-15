@@ -1,63 +1,42 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client';
 import { PlannerContext } from '../../contexts/plannerContext'
 
 import ActivityInfo from '../../components/activity-info/activity-info.component';
-import Card from '../../components/card/card.component';
+import ActivityList from '../../components/activity-list/activity-list.component'
 
 import {ActivitySelectionPageContainer, ActivityInfoSection, ActivityListSection, CardListContainer, GoalOverviewSection} from './activity-selection.styles'
 
-const GET_ACTIVITIES = gql`
-  {
-    allActivity {
-      _id
-      name
-      category
-      description
-    }
-  }
-` 
-
 const ActivitySelectionPage = ({location: {pathname}}) => {
-  const [info, setInfo] = useState(false);
-  const [infoId, setInfoId] = useState('');
-  const {loading, error, data } = useQuery(GET_ACTIVITIES);
   const { planner, addActivity, removeActivity } = useContext(PlannerContext)
+  const [info, setInfo] = useState(false);
+  const [infoId, setInfoId] = useState(null);
+  const [currentGoal, setCurrentGoal] = useState({})
+
+  // const {loading, error, data } = useQuery(GET_ACTIVITIES, {
+  //   exArray: ['007e320c-4d64-481a-a091-6386a6a5f939', '06be7354-848a-4e50-892d-30ab50a4480c']
+  // });
+
   const goalId = pathname.split('/').pop()
-  console.log("goalId: ", goalId)
 
-
+  
+  useEffect(() => {
+    const goal = planner.goals.find(goal => goal.id === goalId)
+    setCurrentGoal(goal)
+  },[goalId, planner.goals])
+  
   const toggleInfo = (activityId) => {
-    setInfoId(activityId);
-    setInfo(true);
+      setInfoId(activityId);
   };
-
-  if (loading) return <p>Spinner...</p>
-  if (error) return <p>Error...</p>
 
   return (
     <ActivitySelectionPageContainer>
       <GoalOverviewSection>
-        CURRENT GOAL
+        Choose Activities for goal: {currentGoal.name}
       </GoalOverviewSection>
       <ActivityListSection info={info}>
-        <CardListContainer>
-          {
-            data.allActivity.map(activity => {
-              const isInPlanner = planner.activities.some(plannerActivity => plannerActivity.id === activity._id);
-              return (
-              <Card 
-                title={activity.name}
-                description={activity.description}
-                primaryBtnTitle={ !isInPlanner? ("Add Activity") : ("Remove Activity") }
-                handlePrimaryClick={() => !isInPlanner ? addActivity(activity, goalId) : removeActivity(activity._id)}
-                secondaryBtnTitle={!info ? "More Info" : "Less Info"}
-                handleSecondaryClick={() => !info ? toggleInfo(activity._id) : setInfo(false)}
-              />
-            )})
-          }
-        </CardListContainer>
+        <ActivityList goalId={goalId} toggleInfo={toggleInfo} infoId={infoId} />
       </ActivityListSection>
       <ActivityInfoSection info={info}>
         <button type='button' onClick={() => setInfo(false)}>Close the info</button>
@@ -68,3 +47,27 @@ const ActivitySelectionPage = ({location: {pathname}}) => {
 }
 
 export default withRouter(ActivitySelectionPage)
+
+{/* <CardListContainer>
+          {
+            data.allActivity.reduce((acc, activity) => {
+              const selectedIds = planner.activities.map(activity => activity.id);
+              if (!selectedIds.includes(activity._id)) {
+                const isInPlanner = planner.activities.some(plannerActivity => plannerActivity.id === activity._id);
+                acc.push(
+                  <Card 
+                    title={activity.name}
+                    description={activity.description}
+                    primaryBtnTitle={ !isInPlanner? ("Add Activity") : ("Remove Activity") }
+                    handlePrimaryClick={() => !isInPlanner ? addActivity(activity, goalId) : removeActivity(activity._id)}
+                    secondaryBtnTitle={!info ? "More Info" : "Less Info"}
+                    handleSecondaryClick={() => !info ? toggleInfo(activity._id) : setInfo(false)}
+                  />
+                )
+                return acc
+              } else {
+                return acc
+              }
+            },[])
+          }
+        </CardListContainer> */}

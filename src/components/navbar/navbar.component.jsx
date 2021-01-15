@@ -31,7 +31,7 @@ const Navbar = ({history}) => {
   return (
     <NavContainer>
       <Nav>
-        <Logo />
+        <Logo onClick={() => history.push('/')}/>
         <NavList>
           <NavItem onClick={() => toggleDropdown('goal')}>
             Goals ({planner.goals.length})

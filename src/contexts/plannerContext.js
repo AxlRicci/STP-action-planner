@@ -2,7 +2,7 @@ import React, {useEffect, useState, createContext} from 'react'
 
 export const PlannerContext = createContext();
 
-const initialState = {step: 'goal-selection', steps: ['','goal-selection', 'plan-overview', 'plan-share'], activities: [], goals: []}
+const initialState = {step: '', steps: ['','goal-selection', 'plan-overview', 'plan-share'], activities: [], goals: []}
 
 const PlannerContextProvider = ({children}) => {
   const [planner, setPlanner] = useState(initialState);
@@ -22,7 +22,7 @@ const PlannerContextProvider = ({children}) => {
 
   // Planner utility functions.
   const clearPlanner = () => {
-    setPlanner(initialState);
+    setPlanner({ ...initialState, step: initialState.steps[1]});
   }
 
   const updatePlannerStep = (step) => {
@@ -55,7 +55,7 @@ const PlannerContextProvider = ({children}) => {
         ...planner,
         goals: [...planner.goals, {id: goal._id, name: goal.name, goalData: goal}]
       })
-      planner.steps.splice(1, 0, `activity-selection/${goal._id}`)
+      planner.steps.splice(2, 0, `activity-selection/${goal._id}`)
     }
   }
 
