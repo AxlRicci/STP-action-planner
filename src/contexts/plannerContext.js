@@ -2,7 +2,7 @@ import React, {useEffect, useState, createContext} from 'react'
 
 export const PlannerContext = createContext();
 
-const initialState = {step: 'goal-selection', steps: ['goal-selection', 'plan-overview', 'plan-share'], activities: [], goals: []}
+const initialState = {step: 'goal-selection', steps: ['','goal-selection', 'plan-overview', 'plan-share'], activities: [], goals: []}
 
 const PlannerContextProvider = ({children}) => {
   const [planner, setPlanner] = useState(initialState);
@@ -59,7 +59,7 @@ const PlannerContextProvider = ({children}) => {
     }
   }
 
-  const addActivity = (activity, goal) => {
+  const addActivity = (activity, goalId) => {
     if (!planner.activities.some(activity => activity.id === activity._id)) {
       setPlanner({
         ...planner,
@@ -70,8 +70,7 @@ const PlannerContextProvider = ({children}) => {
             name: activity.name,
             activityData: activity,
             goalData: {
-              ...goal,
-              id: goal._id
+              id: goalId
             }
           }
         ],

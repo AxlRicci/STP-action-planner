@@ -1,4 +1,5 @@
 import React, {useContext, useState} from 'react'
+import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client';
 import { PlannerContext } from '../../contexts/plannerContext'
 
@@ -18,11 +19,13 @@ const GET_ACTIVITIES = gql`
   }
 ` 
 
-const ActivitySelectionPage = () => {
+const ActivitySelectionPage = ({location: {pathname}}) => {
   const [info, setInfo] = useState(false);
   const [infoId, setInfoId] = useState('');
   const {loading, error, data } = useQuery(GET_ACTIVITIES);
   const { planner, addActivity, removeActivity } = useContext(PlannerContext)
+  const goalId = pathname.split('/').pop()
+  console.log("goalId: ", goalId)
 
 
   const toggleInfo = (activityId) => {
@@ -48,7 +51,7 @@ const ActivitySelectionPage = () => {
                 title={activity.name}
                 description={activity.description}
                 primaryBtnTitle={ !isInPlanner? ("Add Activity") : ("Remove Activity") }
-                handlePrimaryClick={() => !isInPlanner ? addActivity(activity, {goalId: '1234'}) : removeActivity(activity._id)}
+                handlePrimaryClick={() => !isInPlanner ? addActivity(activity, goalId) : removeActivity(activity._id)}
                 secondaryBtnTitle={!info ? "More Info" : "Less Info"}
                 handleSecondaryClick={() => !info ? toggleInfo(activity._id) : setInfo(false)}
               />
@@ -64,4 +67,4 @@ const ActivitySelectionPage = () => {
   )
 }
 
-export default ActivitySelectionPage
+export default withRouter(ActivitySelectionPage)
