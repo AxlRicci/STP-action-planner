@@ -36,8 +36,6 @@ const ActivityList = ({goalId, infoId, toggleInfo }) => {
     <div>
       {
         data?.allActivity.map(activity => {
-          console.log(infoId)
-          console.log(activity)
           const isInPlanner = planner.activities.some(plannerActivity => plannerActivity.id === activity._id)
           return (
           <Card 
@@ -45,7 +43,7 @@ const ActivityList = ({goalId, infoId, toggleInfo }) => {
             description={activity.description}
             primaryBtnTitle={ !isInPlanner? ("Add Activity") : ("Remove Activity") }
             handlePrimaryClick={() => !isInPlanner ? addActivity(activity, goalId) : removeActivity(activity._id)}
-            secondaryBtnTitle={!infoId === activity._id ? "More Info" : "Less Info"}
+            secondaryBtnTitle={infoId === activity._id ? "Less Info" : "More Info"}
             handleSecondaryClick={() => toggleInfo(activity._id)}
           />
         )})

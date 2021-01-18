@@ -9,14 +9,10 @@ import ActivityList from '../../components/activity-list/activity-list.component
 import {ActivitySelectionPageContainer, ActivityInfoSection, ActivityListSection, CardListContainer, GoalOverviewSection} from './activity-selection.styles'
 
 const ActivitySelectionPage = ({location: {pathname}}) => {
-  const { planner, addActivity, removeActivity } = useContext(PlannerContext)
+  const { planner } = useContext(PlannerContext)
   const [info, setInfo] = useState(false);
   const [infoId, setInfoId] = useState(null);
   const [currentGoal, setCurrentGoal] = useState({})
-
-  // const {loading, error, data } = useQuery(GET_ACTIVITIES, {
-  //   exArray: ['007e320c-4d64-481a-a091-6386a6a5f939', '06be7354-848a-4e50-892d-30ab50a4480c']
-  // });
 
   const goalId = pathname.split('/').pop()
 
@@ -27,8 +23,16 @@ const ActivitySelectionPage = ({location: {pathname}}) => {
   },[goalId, planner.goals])
   
   const toggleInfo = (activityId) => {
-      setInfoId(activityId);
+    if (activityId === infoId) {
+      setInfo(false)
+      setInfoId(null)
+    } else if(activityId !== infoId) {
+      setInfo(true)
+      setInfoId(activityId)
+    }
   };
+
+  if (!currentGoal) return <p>Loading Goal...</p>
 
   return (
     <ActivitySelectionPageContainer>

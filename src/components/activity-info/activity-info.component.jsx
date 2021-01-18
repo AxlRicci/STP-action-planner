@@ -1,5 +1,5 @@
-import React from 'react'
-import { gql, useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react'
+import { gql, useLazyQuery } from '@apollo/client';
 
 import ActivityInfoTab from '../activity-info-tab/activity-info-tab.component';
 
@@ -46,18 +46,22 @@ const GET_ACTIVITY = gql`
 `
 
 const ActivityInfo = ({id}) => {
-  const {loading, error, data} = useQuery(GET_ACTIVITY, {
-    variables: { id },
-  });
+  const [getActivityInfo, {loading, error, data}] = useLazyQuery(GET_ACTIVITY);
+  const [oldActivityId, setOldActivityId] = useState(null)
+
+  useEffect(() => {
+    if (id !== oldActivityId) {
+      setOldActivityId(id)
+      getActivityInfo({variables: {id}})
+    }
+  },[id, oldActivityId, getActivityInfo])
 
   if (loading) return <p>Loading...</p>
-  if (error) {
-    console.log(error)
-    return <p>Error..</p>
-  }
-  console.log(data);
+  if (error) return <p>Error...</p>
+  if (!data?.Activity) return <p>No activity selected.</p>
 
-  const titleInfo = ['name', 'description', 'category', '__typename', 'supportTarget'] // Set which information will be removed.
+
+  const titleInfo = ['name', 'description', 'category', '__typename', 'supportTarget'] // Set which information will be removed from dropdown sections.
   const nonTitleInfo = Object.keys(data.Activity).reduce((result, currentItem) => {
     if (!titleInfo.includes(currentItem) && data.Activity[currentItem] !== null) {
         result.push(
@@ -69,8 +73,6 @@ const ActivityInfo = ({id}) => {
       }
     return result
   }, []);
-
-  console.log(nonTitleInfo);
 
   return (
     <ActivityInfoContainer>
