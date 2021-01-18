@@ -2,10 +2,11 @@ import React, {useContext, useState} from 'react'
 import { withRouter } from 'react-router-dom'
 import {PlannerContext} from '../../contexts/plannerContext'
 import { FaBeer } from 'react-icons/fa';
+import stswrLogo from '../../assets/img/STSWR_Logo.png'
 
 import NavDropdown from '../nav-dropdown/nav-dropdown.component'
 
-import {Nav, NavContainer, Logo, NavLink, NavList, NavItem, NavItemDropdown, NavButton} from './navbar.styles'
+import {Nav, NavContainer, Logo, NavLink, NavList, NavItem, NavItemDropdown, NavActions, NavButton} from './navbar.styles'
 
 const Navbar = ({history}) => {
   const initialDropdownState = {goal: false, activity: false};
@@ -31,7 +32,7 @@ const Navbar = ({history}) => {
   return (
     <NavContainer>
       <Nav>
-        <Logo onClick={() => history.push('/')}/>
+        <p>Logo</p>
         <NavList>
           <NavItem onClick={() => toggleDropdown('goal')}>
             Goals ({planner.goals.length})
@@ -72,8 +73,10 @@ const Navbar = ({history}) => {
             }
           </NavItem>
         </NavList>
-        <NavButton onClick={() => handleNav('prev')}>Prev Step.</NavButton>
-        <NavButton onClick={() => handleNav('next')}>Next Step.</NavButton>
+        <NavActions>
+          <NavButton onClick={() => handleNav('prev')}>Prev Step.</NavButton>
+          <NavButton onClick={() => handleNav('next')}>Next Step.</NavButton>
+        </NavActions>
       </Nav>
     </NavContainer>
   )

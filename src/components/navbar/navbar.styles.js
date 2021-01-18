@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { MdDirectionsBike } from 'react-icons/md'
 
 export const NavContainer = styled.nav`
-  height: 8rem;
+  height: max-content;
   width: 100%;
+  padding: 2rem;
   
   display: flex;
   justify-content: center;
@@ -13,16 +13,15 @@ export const NavContainer = styled.nav`
 export const Nav = styled.div`
   width: 100%;
   max-width: 144rem;
-  padding: 2rem;
 
   display: flex;
-  gap: 10rem;
+  justify-content: space-between;
+  align-items: center;
 `
 
-export const Logo = styled(MdDirectionsBike)`
-  height: 3.5rem;
-  width: 3.5rem;
-
+export const Logo = styled.img`
+  height: 6rem;
+  width: auto;
 `
 
 export const NavList = styled.ul`
@@ -60,6 +59,14 @@ export const NavItemDropdown = styled.ul`
   gap: 1rem;
 
   background-color: grey;
+`
+
+export const NavActions = styled.div`
+  width: max-content;
+  height: max-content;
+
+  display: flex;
+  gap: 2rem;
 `
 
 export const NavButton = styled.button`
