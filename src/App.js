@@ -11,6 +11,7 @@ import HomePage from './pages/home/home.component';
 import PlannerOverview from './pages/planner-overview/planner-overview.component';
 
 import './App.css';
+import Theme from './theme/theme.jsx'
 import Navbar from './components/navbar/navbar.component';
 
 
@@ -54,25 +55,27 @@ class App extends Component {
     return (
       <ApolloProvider client={client}>
         <div className="App">
-          <PlannerContextProvider>
-            <Router>
-              <Navbar />
-              <Switch>
-                <Route exact path="/">
-                  <HomePage />
-                </Route>
-                <Route path="/goal-selection">
-                  <GoalSelectionPage />
-                </Route>
-                <Route path="/activity-selection">
-                  <ActivitySelectionPage />
-                </Route>
-                <Route path="/plan-overview">
-                  <PlannerOverview />
-                </Route>
-              </Switch>
-            </Router>
-          </PlannerContextProvider>
+          <Theme>
+            <PlannerContextProvider>
+              <Router>
+                <Navbar />
+                <Switch>
+                  <Route exact path="/">
+                    <HomePage />
+                  </Route>
+                  <Route path="/goal-selection">
+                    <GoalSelectionPage />
+                  </Route>
+                  <Route path="/activity-selection">
+                    <ActivitySelectionPage />
+                  </Route>
+                  <Route path="/plan-overview">
+                    <PlannerOverview />
+                  </Route>
+                </Switch>
+              </Router>
+            </PlannerContextProvider>
+          </Theme>
         </div>
       </ApolloProvider>
     )

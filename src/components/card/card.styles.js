@@ -112,12 +112,12 @@ export const CardButton = styled.button`
   padding: 1rem 3rem;
 
   font-size: 1.6rem;
-  color: #fff;
+  color: ${props => props.theme.colors.black};
+  font-weight: 500;
   
-  background-color: blue;
-  border-radius: 2rem;
+  background-color: ${props => props.theme.colors.green};
+  border-radius: 1rem;
   border: none;
-  box-shadow: .25rem .5rem .5rem 0px rgba(0,0,0, 0.15);
 
   &:not(:last-child) {
     margin-bottom: 1rem;
