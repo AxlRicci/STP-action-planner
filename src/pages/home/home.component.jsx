@@ -1,5 +1,9 @@
 import React, {useContext} from 'react'
+
 import { PlannerContext } from '../../contexts/plannerContext'
+
+import CustomButton from '../../components/custom-button/custom-button.component'
+
 import {PageContainer, HomeContainer, HomeContent, Button, ActionsContainer, HeadingContainer, HeadingTitle, HeadingSubtitle} from './home.styles'
 
 const HomePage = () => {
@@ -13,8 +17,12 @@ const HomePage = () => {
             <HeadingSubtitle>Select an option below to start</HeadingSubtitle>
           </HeadingContainer>
           <ActionsContainer>
-            <Button to={`/${steps[1]}`} onClick={clearPlanner}>Start a new action plan</Button>
-            <Button to={`/${step}`}>Resume previous action plan</Button>
+            <CustomButton to={`/${steps[1]}`} onClick={clearPlanner}>Start a new action plan</CustomButton>
+            {
+              step !== steps[0] ? (
+                <CustomButton to={`/${step}`}>Resume previous action plan</CustomButton>
+              ) : null
+            }
           </ActionsContainer>
         </HomeContent>
       </HomeContainer>
