@@ -43,8 +43,7 @@ const ActivitySelectionPage = ({location: {pathname}}) => {
         <ActivityList goalId={goalId} toggleInfo={toggleInfo} infoId={infoId} />
       </ActivityListSection>
       <ActivityInfoSection info={info}>
-        <button type='button' onClick={() => setInfo(false)}>Close the info</button>
-        <ActivityInfo id={infoId} />
+        <ActivityInfo id={infoId} handleClose ={() => setInfo(false)} />
       </ActivityInfoSection>
     </PageContainer>
   )

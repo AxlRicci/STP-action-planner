@@ -63,8 +63,9 @@ export const ActivityInfoSection = styled.section`
 
   grid-area: 3 / 1 / 4 / 3;
 
-  background-color: #e7e7e7;
+  border: 1px solid ${props => props.theme.colors.white};
   border-radius: 1rem;
+
 
   overflow: hidden;
 

@@ -29,17 +29,35 @@ export const ActivityTargetContainer = styled.div`
   width: 100%;
 
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+`
+
+export const ActivityTargetTitle = styled.p`
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 400;
+`
+
+export const ActivityTargetItemContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
   justify-content: flex-start;
-  align-items: center;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 `
 
 export const ActivityTargetItem = styled.p`
+  width: max-content;
+  margin: 0;
+
   font-size: 1.4rem;
   text-transform: capitalize;
   padding: .5rem 1rem;
 
-  background-color: #777;
+  background-color: ${props => props.theme.colors.orange};
+  color: #fff;
   border-radius: 1rem;
 `
 

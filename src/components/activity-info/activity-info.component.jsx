@@ -3,7 +3,7 @@ import { gql, useLazyQuery } from '@apollo/client';
 
 import ActivityInfoTab from '../activity-info-tab/activity-info-tab.component';
 
-import {ActivityInfoContainer, ActivityDescription, ActivityTitle, ActivityTargetContainer, ActivityTargetItem} from './activity-info.styles'
+import {ActivityInfoContainer, ActivityTargetTitle, ActivityTargetItemContainer, ActivityDescription, ActivityTitle, ActivityTargetContainer, ActivityTargetItem} from './activity-info.styles'
 
 const GET_ACTIVITY = gql`
   query Activity($id: ID!) {
@@ -80,11 +80,14 @@ const ActivityInfo = ({id}) => {
         {data.Activity.name}
       </ActivityTitle>
       <ActivityTargetContainer>
-        {
-          data.Activity.supportTarget.map(item => (
-            <ActivityTargetItem key={item}>{item}</ActivityTargetItem>
-          ))
-        }
+        <ActivityTargetTitle>Target Audience:</ActivityTargetTitle>
+        <ActivityTargetItemContainer>
+          {
+            data.Activity.supportTarget.map(item => (
+              <ActivityTargetItem key={item}>{item}</ActivityTargetItem>
+            ))
+          }
+        </ActivityTargetItemContainer>
       </ActivityTargetContainer>
       <ActivityDescription>
         {data.Activity.description}

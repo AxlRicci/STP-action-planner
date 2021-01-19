@@ -9,10 +9,7 @@ export const Tab = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  background-color: #fff;
-  border: 1px solid grey;
-  border-radius: 1rem;
+  font-size: 1.6rem;
 `
 
 export const TabHeader = styled.div`
