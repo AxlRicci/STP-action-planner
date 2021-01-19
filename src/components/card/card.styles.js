@@ -12,6 +12,7 @@ export const CardContainer = styled.div`
   gap: 3rem;
 
   background-color: white;
+  border: 1px solid ${props => props.theme.colors.white};
   border-radius: 1rem;
   box-shadow: .5rem .5rem .5rem 0 rgba(0,0,0, .15);
 

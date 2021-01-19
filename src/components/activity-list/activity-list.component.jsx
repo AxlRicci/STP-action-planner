@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { gql, useLazyQuery } from '@apollo/client';
 import { PlannerContext } from '../../contexts/plannerContext'
 
+import { ActivityListContainer } from './activity-list.styles'
+
 import Card from '../../components/card/card.component'
 
 const GET_ACTIVITIES = gql`
@@ -33,7 +35,7 @@ const ActivityList = ({goalId, infoId, toggleInfo }) => {
   if (error) return <p>Error...</p>
 
   return (
-    <div>
+    <ActivityListContainer>
       {
         data?.allActivity.map(activity => {
           const isInPlanner = planner.activities.some(plannerActivity => plannerActivity.id === activity._id)
@@ -48,7 +50,7 @@ const ActivityList = ({goalId, infoId, toggleInfo }) => {
           />
         )})
       }
-    </div>
+    </ActivityListContainer>
   )
 }
 
