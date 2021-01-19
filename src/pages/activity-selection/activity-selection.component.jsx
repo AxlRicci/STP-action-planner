@@ -1,63 +1,53 @@
-import React, {useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
+import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client';
+import { PlannerContext } from '../../contexts/plannerContext'
 
 import ActivityInfo from '../../components/activity-info/activity-info.component';
-import CardList from '../../components/card-list/card-list.component';
-import ActivityCart from '../../components/activity-cart/activity-cart.component';
+import ActivityList from '../../components/activity-list/activity-list.component'
 
-import {ActivitySelectionPageContainer, ActivityInfoSection, ActivityListSection,GoalOverviewSection} from './activity-selection.styles'
+import {ActivitySelectionPageContainer, ActivityInfoSection, ActivityListSection, CardListContainer, GoalOverviewSection} from './activity-selection.styles'
 
-const GET_ACTIVITIES = gql`
-  {
-    allActivity {
-      _id
-      name
-      category
-      description
-    }
-  }
-`
-
-const ActivitySelectionPage = () => {
+const ActivitySelectionPage = ({location: {pathname}}) => {
+  const { planner } = useContext(PlannerContext)
   const [info, setInfo] = useState(false);
-  const [infoId, setInfoId] = useState('');
-  const {loading, error, data } = useQuery(GET_ACTIVITIES);
-  // console.log(data);
+  const [infoId, setInfoId] = useState(null);
+  const [currentGoal, setCurrentGoal] = useState({})
 
-  // iterate through all selected goals.
-  // fetch all activities that are associated with current goal.
+  const goalId = pathname.split('/').pop()
+
   
-  // list fetched activities
-
+  useEffect(() => {
+    const goal = planner.goals.find(goal => goal.id === goalId)
+    setCurrentGoal(goal)
+  },[goalId, planner.goals])
+  
   const toggleInfo = (activityId) => {
-    setInfoId(activityId);
-    setInfo(true);
+    if (activityId === infoId) {
+      setInfo(false)
+      setInfoId(null)
+    } else if(activityId !== infoId) {
+      setInfo(true)
+      setInfoId(activityId)
+    }
   };
 
-
+  if (!currentGoal) return <p>Loading Goal...</p>
 
   return (
     <ActivitySelectionPageContainer>
       <GoalOverviewSection>
-        <ActivityCart />
+        Choose Activities for goal: {currentGoal.name}
       </GoalOverviewSection>
       <ActivityListSection info={info}>
-        {
-          loading ? (
-            <p>Spinner..</p>
-          ) : error ? (
-            <p>error</p>
-          ) : (
-            <CardList toggleInfo={toggleInfo} cards={data.allActivity} />
-          )
-        }
+        <ActivityList goalId={goalId} toggleInfo={toggleInfo} infoId={infoId} />
       </ActivityListSection>
       <ActivityInfoSection info={info}>
-        <button type='button' onClick={() => setInfo(false)} >Close the info</button>
+        <button type='button' onClick={() => setInfo(false)}>Close the info</button>
         <ActivityInfo id={infoId} />
       </ActivityInfoSection>
     </ActivitySelectionPageContainer>
   )
 }
 
-export default ActivitySelectionPage
+export default withRouter(ActivitySelectionPage)

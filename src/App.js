@@ -1,17 +1,18 @@
 import React, {Component} from 'react'
-
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
+import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 
+import PlannerContextProvider from './contexts/plannerContext'
+
+import ActivitySelectionPage from './pages/activity-selection/activity-selection.component';
 import GoalSelectionPage from './pages/goal-selection/goal-selection.component';
+import HomePage from './pages/home/home.component';
+import PlannerOverview from './pages/planner-overview/planner-overview.component';
 
 import './App.css';
+import Theme from './theme/theme.jsx'
 import Navbar from './components/navbar/navbar.component';
-import ActivitySelectionPage from './pages/activity-selection/activity-selection.component';
-
-import { ApolloProvider } from '@apollo/client/react';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client/core';
-import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
-import { cache } from './apollo/cache';
 
 
 class App extends Component {
@@ -21,21 +22,14 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    
-    const typeDefs = gql`
-      extend type Query {
-        cartActivities: [ID!]
-      }
-    `;
+    const cache = new InMemoryCache({});
 
     const client = new ApolloClient({
       cache,
       uri: 'https://5t9ho02u.api.sanity.io/v1/graphql/production/default',
-      typeDefs,
     })
 
     try {
-      // See above for additional options, including other storage providers.
       await persistCache({
         cache,
         storage: new LocalStorageWrapper(window.localStorage),
@@ -50,27 +44,38 @@ class App extends Component {
     });
   }
 
+
   render() {
     const { client, loaded } = this.state;
 
     if (!loaded) {
       return <div>Loading...</div>
     }
-
+    
     return (
       <ApolloProvider client={client}>
         <div className="App">
-          <Navbar />
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <GoalSelectionPage />
-              </Route>
-              <Route path="/activity-selection">
-                <ActivitySelectionPage />
-              </Route>
-            </Switch>
-          </Router>
+          <Theme>
+            <PlannerContextProvider>
+              <Router>
+                <Navbar />
+                <Switch>
+                  <Route exact path="/">
+                    <HomePage />
+                  </Route>
+                  <Route path="/goal-selection">
+                    <GoalSelectionPage />
+                  </Route>
+                  <Route path="/activity-selection">
+                    <ActivitySelectionPage />
+                  </Route>
+                  <Route path="/plan-overview">
+                    <PlannerOverview />
+                  </Route>
+                </Switch>
+              </Router>
+            </PlannerContextProvider>
+          </Theme>
         </div>
       </ApolloProvider>
     )
