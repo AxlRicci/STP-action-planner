@@ -61,6 +61,7 @@ const PlannerContextProvider = ({children}) => {
 
   const addActivity = (activity, goalId) => {
     if (!planner.activities.some(activity => activity.id === activity._id)) {
+      const { name } = planner.goals.find(goal => goal.id === goalId)
       setPlanner({
         ...planner,
         activities: [
@@ -70,7 +71,8 @@ const PlannerContextProvider = ({children}) => {
             name: activity.name,
             activityData: activity,
             goalData: {
-              id: goalId
+              id: goalId,
+              name: name,
             }
           }
         ],
