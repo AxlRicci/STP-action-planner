@@ -35,7 +35,6 @@ export const NavList = styled.ul`
 
 export const NavItem = styled.li`
   font-size: 1.6rem;
-
   position: relative;
 `
 
@@ -47,7 +46,7 @@ export const NavLink = styled(Link)`
 export const NavItemDropdown = styled.ul`
   height: max-content;
   width: max-content;
-  padding: 1rem 3rem;
+  padding: 1rem;
 
   position: absolute;
   top: 100%;
@@ -56,19 +55,10 @@ export const NavItemDropdown = styled.ul`
 
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 1rem;
 
-  background-color: grey;
-`
-
-export const NavActions = styled.div`
-  width: max-content;
-  height: max-content;
-
-  display: flex;
-  gap: 2rem;
-`
-
-export const NavButton = styled.button`
-
+  background-color: #fff;
+  border: 1px solid ${props => props.theme.colors.blue};
+  border-radius: 1rem;
 `

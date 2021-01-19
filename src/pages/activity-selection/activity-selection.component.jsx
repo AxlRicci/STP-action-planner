@@ -51,27 +51,3 @@ const ActivitySelectionPage = ({location: {pathname}}) => {
 }
 
 export default withRouter(ActivitySelectionPage)
-
-{/* <CardListContainer>
-          {
-            data.allActivity.reduce((acc, activity) => {
-              const selectedIds = planner.activities.map(activity => activity.id);
-              if (!selectedIds.includes(activity._id)) {
-                const isInPlanner = planner.activities.some(plannerActivity => plannerActivity.id === activity._id);
-                acc.push(
-                  <Card 
-                    title={activity.name}
-                    description={activity.description}
-                    primaryBtnTitle={ !isInPlanner? ("Add Activity") : ("Remove Activity") }
-                    handlePrimaryClick={() => !isInPlanner ? addActivity(activity, goalId) : removeActivity(activity._id)}
-                    secondaryBtnTitle={!info ? "More Info" : "Less Info"}
-                    handleSecondaryClick={() => !info ? toggleInfo(activity._id) : setInfo(false)}
-                  />
-                )
-                return acc
-              } else {
-                return acc
-              }
-            },[])
-          }
-        </CardListContainer> */}

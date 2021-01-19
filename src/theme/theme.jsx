@@ -10,6 +10,7 @@ const theme = {
     white: "#F2F2F2",
     darkGrey: "#4B4B4B",
     black: "#000",
+    red: "#ff0000"
   },
   shadows: {
     med: ".5rem .5rem .5rem 0 rgba(0,0,0, .15)",
