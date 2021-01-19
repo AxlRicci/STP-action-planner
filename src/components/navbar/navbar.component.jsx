@@ -1,13 +1,11 @@
 import React, {useContext, useState} from 'react'
 import { withRouter } from 'react-router-dom'
 import {PlannerContext} from '../../contexts/plannerContext'
-import { AiOutlineCloseCircle } from 'react-icons/ai';
 
-import CustomButton from '../custom-button/custom-button.component'
 import NavbarDropdownItem from '../navbar-dropdown-item/navbar-dropdown-item.component'
 import NavbarStepActions from '../navbar-step-actions/navbar-step-actions.components'
 
-import {Nav, NavContainer, Logo, NavLink, NavList, NavItem, NavItemDropdown, NavActions, NavButton} from './navbar.styles'
+import {Nav, NavContainer, Logo, NavLink, NavList, NavItem, NavItemDropdown} from './navbar.styles'
 
 const Navbar = ({history}) => {
   const initialDropdownState = {goal: false, activity: false};
@@ -33,7 +31,9 @@ const Navbar = ({history}) => {
   return (
     <NavContainer>
       <Nav>
-        <p>Logo</p>
+        <NavLink to='/' >
+          <Logo />  
+        </NavLink>
         <NavList>
           <NavItem onClick={() => toggleDropdown('goal')}>
             <span>Goals ({planner.goals.length})</span>

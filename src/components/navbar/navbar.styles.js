@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
+import {ReactComponent as LogoIcon } from '../../assets/img/walk.svg'
+
 export const NavContainer = styled.nav`
   height: max-content;
   width: 100%;
@@ -19,8 +21,8 @@ export const Nav = styled.div`
   align-items: center;
 `
 
-export const Logo = styled.img`
-  height: 6rem;
+export const Logo = styled(LogoIcon)`
+  height: 4rem;
   width: auto;
 `
 
